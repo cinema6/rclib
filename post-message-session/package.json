@@ -1,0 +1,44 @@
+{
+  "name": "rc-post-message-session",
+  "version": "1.0.0",
+  "description": "Wrapper over the postMessage() API that includes Promise-based requests/responses.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "node ./scripts/validate_npm_version.js \">= v2.x\" && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cinema6/rclib.git"
+  },
+  "keywords": [
+    "browser",
+    "postMessage",
+    "promise"
+  ],
+  "author": "Reelcontent, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cinema6/rclib/issues"
+  },
+  "homepage": "https://github.com/cinema6/rclib#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-karma": "^0.12.1",
+    "jasmine-core": "^2.4.0",
+    "karma": "^0.13.15",
+    "karma-browserify": "^4.4.2",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9.19",
+    "semver": "^5.1.0"
+  },
+  "dependencies": {
+    "lie": "^3.0.1"
+  }
+}
