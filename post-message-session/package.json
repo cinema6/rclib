@@ -1,6 +1,6 @@
 {
   "name": "rc-post-message-session",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wrapper over the postMessage() API that includes Promise-based requests/responses.",
   "main": "index.js",
   "directories": {
