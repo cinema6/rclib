@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "prepublish": "node ./scripts/validate_npm_version.js \">= v2.x\" && npm test"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,8 @@
     "phantomjs": "^1.9.19",
     "proxyquire": "^1.7.3",
     "proxyquire-universal": "^1.0.8",
-    "proxyquireify": "^3.0.0"
+    "proxyquireify": "^3.0.0",
+    "semver": "^5.1.0"
   },
   "dependencies": {
     "lodash": "^3.10.1"
