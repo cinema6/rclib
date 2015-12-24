@@ -1,6 +1,6 @@
 {
   "name": "rc-logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extensible logger that can log to different locations.",
   "main": "index.js",
   "directories": {
