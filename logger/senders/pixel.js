@@ -1,8 +1,8 @@
 'use strict';
 
 /* jshint node:false, browser:true, browserify:true */
-var merge = require('lodash/Object/merge');
-var noop = require('lodash/Utility/noop');
+var merge = require('lodash/object/merge');
+var noop = require('lodash/utility/noop');
 var stringify = require('querystring').stringify;
 
 module.exports = function get(config) {
