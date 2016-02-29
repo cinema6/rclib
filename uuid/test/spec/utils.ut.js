@@ -13,7 +13,7 @@ describe('utils', function() {
         it('should return a random integer', function() {
             var rand = utils.randInt(100);
             expect(rand >= 0).toBe(true);
-            expect(rand <= 100).toBe(true);
+            expect(rand < 100).toBe(true);
         });
         
         it('should handle an undefined max', function() {
@@ -68,6 +68,9 @@ describe('utils', function() {
             expect(utils.getIp()).toBe('127.0.0.1');
             
             mockIfaces = {};
+            expect(utils.getIp()).toBe('127.0.0.1');
+            
+            os.networkInterfaces.and.returnValue();
             expect(utils.getIp()).toBe('127.0.0.1');
         });
     });

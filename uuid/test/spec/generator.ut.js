@@ -29,6 +29,13 @@ describe('generator', function() {
     describe('getMachineId', function() {
         beforeEach(function() {
             spyOn(utils, 'getIp');
+            spyOn(utils, 'randInt').and.callFake(function() {
+                if (utils.randInt.calls.count() <= 1) {
+                    return 123;
+                } else {
+                    return 234;
+                }
+            });
         });
         
         it('should return a number computed from the last two sections of the ip', function() {
@@ -43,6 +50,14 @@ describe('generator', function() {
 
             utils.getIp.and.returnValue('10.0.255.255');
             expect(generator.getMachineId()).toBe(65535);
+            expect(utils.randInt).not.toHaveBeenCalled();
+        });
+        
+        it('should use a random machine id if the ip is 127.0.0.1', function() {
+            utils.getIp.and.returnValue('127.0.0.1');
+            expect(generator.getMachineId()).toBe(228330);
+            expect(utils.randInt.calls.count()).toBe(2);
+            expect(utils.randInt).toHaveBeenCalledWith(256);
         });
     });
     

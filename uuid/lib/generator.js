@@ -42,8 +42,18 @@ generator.capValue = function(val, type) {
 // Get a "machine id": computed by treating last two sections of local IP address as 2-byte int
 generator.getMachineId = function() {
     var ip = utils.getIp(),
-        ipMatch = ip.match(/(\d+)\.(\d+)$/),
-        ipNums = [ parseInt(ipMatch[1]), parseInt(ipMatch[2]) ];
+        ipMatch, ipNums;
+    
+    /* If only local IP returned, use a random value that cannot come from a real IP instead.
+     * Max value for 3-char string is 0x3ffff, but values generated from real IP can be at most
+     * 0x0ffff. So use a random number up to 0xffff, and then OR with 0x30000. */
+    if (ip === '127.0.0.1') {
+        ipNums = [ utils.randInt(256), utils.randInt(256) ];
+        return ( (ipNums[0] << 8) + ipNums[1] ) | 0x30000;
+    }
+    
+    ipMatch = ip.match(/(\d+)\.(\d+)$/);
+    ipNums = [ parseInt(ipMatch[1]), parseInt(ipMatch[2]) ];
     
     return (ipNums[0] << 8) + ipNums[1];
 };
