@@ -1,0 +1,36 @@
+{
+  "name": "rc-uuid",
+  "version": "1.0.0",
+  "description": "Library for generating unique ids.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "node ./scripts/validate_npm_version.js \">= v2.x\" && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cinema6/rclib.git"
+  },
+  "keywords": [
+    "uuid",
+    "id"
+  ],
+  "author": "Reelcontent, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cinema6/rclib/issues"
+  },
+  "homepage": "https://github.com/cinema6/rclib#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "jasmine": "^2.4.1",
+    "semver": "^5.1.0"
+  },
+  "dependencies": {
+  }
+}
