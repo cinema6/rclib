@@ -41,21 +41,43 @@ generator.capValue = function(val, type) {
 
 // Get a "machine id": computed by treating last two sections of local IP address as 2-byte int
 generator.getMachineId = function() {
-    var ip = utils.getIp(),
+    var self = this,
+        ip = utils.getIp(),
         ipMatch, ipNums;
     
     /* If only local IP returned, use a random value that cannot come from a real IP instead.
      * Max value for 3-char string is 0x3ffff, but values generated from real IP can be at most
      * 0x0ffff. So use a random number up to 0xffff, and then OR with 0x30000. */
     if (ip === '127.0.0.1') {
-        ipNums = [ utils.randInt(256), utils.randInt(256) ];
-        return ( (ipNums[0] << 8) + ipNums[1] ) | 0x30000;
+        // only create this fake machineId once, then reuse
+        if (self.components.machineId.fakeVal === undefined) {
+            ipNums = [ utils.randInt(256), utils.randInt(256) ];
+            self.components.machineId.fakeVal = ( (ipNums[0] << 8) + ipNums[1] ) | 0x30000;
+        }
+        
+        return self.components.machineId.fakeVal;
     }
     
     ipMatch = ip.match(/(\d+)\.(\d+)$/);
     ipNums = [ parseInt(ipMatch[1]), parseInt(ipMatch[2]) ];
     
     return (ipNums[0] << 8) + ipNums[1];
+};
+
+// Normally returns process.pid. If not defined (i.e. in browser) store + return a fake value.
+generator.getProcessId = function() {
+    var self = this;
+
+    if (process && !!process.pid) {
+        return process.pid;
+    }
+    
+    if (self.components.processId.fakeVal === undefined) {
+        var max = Math.pow(ALPHABET.length, generator.components.processId.length);
+        self.components.processId.fakeVal = utils.randInt(max);
+    }
+    
+    return self.components.processId.fakeVal;
 };
 
 // Convert val into a string appropriate for the given type
@@ -91,12 +113,13 @@ generator.decode = function(str) {
     return val;
 };
 
+
 // Create and return a new uuid
 generator.generate = function() {
     var self = this;
 
     var machineId = self.capValue(generator.getMachineId(), 'machineId'),
-        processId = self.capValue(process.pid, 'processId');
+        processId = self.capValue(self.getProcessId(), 'processId');
         
     // Express ts as difference from a reference time, giving ts field more possible values
     var ts = self.capValue(Date.now() - OLD_TS, 'ts');

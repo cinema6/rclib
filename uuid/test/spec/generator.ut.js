@@ -51,6 +51,7 @@ describe('generator', function() {
             utils.getIp.and.returnValue('10.0.255.255');
             expect(generator.getMachineId()).toBe(65535);
             expect(utils.randInt).not.toHaveBeenCalled();
+            expect(generator.components.machineId.fakeVal).not.toBeDefined();
         });
         
         it('should use a random machine id if the ip is 127.0.0.1', function() {
@@ -58,6 +59,39 @@ describe('generator', function() {
             expect(generator.getMachineId()).toBe(228330);
             expect(utils.randInt.calls.count()).toBe(2);
             expect(utils.randInt).toHaveBeenCalledWith(256);
+            expect(generator.components.machineId.fakeVal).toBe(228330);
+
+            // should reuse the fakeVal
+            expect(generator.getMachineId()).toBe(228330);
+            expect(utils.randInt.calls.count()).toBe(2);
+        });
+    });
+    
+    describe('getProcessId', function() {
+        it('should return the process pid', function() {
+            expect(generator.getProcessId()).toBe(process.pid);
+            expect(generator.components.processId.fakeVal).not.toBeDefined();
+        });
+        
+        describe('if the process pid is not defined', function() {
+            var pid;
+            beforeEach(function() {
+                pid = process.pid;
+                delete process.pid;
+                spyOn(utils, 'randInt').and.returnValue(1234);
+            });
+            
+            afterEach(function() {
+                process.pid = pid;
+            });
+
+            it('should return and store a random value', function() {
+                expect(generator.getProcessId()).toBe(1234);
+                expect(generator.components.processId.fakeVal).toBe(1234);
+
+                // should reuse the fakeVal
+                expect(generator.getProcessId()).toBe(1234);
+            });
         });
     });
     
@@ -89,6 +123,7 @@ describe('generator', function() {
     describe('generate', function() {
         beforeEach(function() {
             spyOn(generator, 'getMachineId').and.returnValue(123);
+            spyOn(generator, 'getProcessId').and.returnValue(4567);
             generator.components.counter.start = 1234;
             generator.counter = 1234;
             generator.previousTS = 0;
@@ -108,7 +143,7 @@ describe('generator', function() {
             
             var matchObj = id.match(/(.{3})(.{3})(.{7})(.{3})/);
             expect(matchObj[1]).toBe('01X');        // encoded machineId
-            expect(matchObj[2]).toBe(generator.encode(process.pid, 'processId'));
+            expect(matchObj[2]).toBe('17n');        // encoded processId
             expect(matchObj[3]).toBe('000bQ!t');    // encoded ts
             expect(matchObj[4]).toBe('0ji');        // encoded counter
             
