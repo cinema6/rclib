@@ -9,15 +9,19 @@ var OLD_TS      = 1456763680592,
 var generator = {
     components: {   // NOTE: DON'T CHANGE THESE LENGTHS EITHER
         machineId: {
-            length: 3
+            //length: 3
+            length: 4
         },
         processId: {
-            length: 3
+            //length: 3
+            length: 4
         },
         ts: { // NOTE: This value will rollover at Sun Jul 13 2155 20:09:51 GMT-0400 (EDT).
-            length: 7
+            //length: 7
+            length: 9
         },
         counter: {
+            //length: 3
             length: 3
         }
     },
@@ -27,7 +31,7 @@ var generator = {
 
 // start counter at random int b/t 0 and max value possible for 3-char string
 generator.components.counter.max = Math.pow(
-    ALPHABET.length,
+    ( ALPHABET.length / 2 ),
     generator.components.counter.length
 );
 generator.components.counter.start = utils.randInt(generator.components.counter.max);
@@ -84,19 +88,19 @@ generator.getProcessId = function() {
 generator.encode = function(val, type) {
     var self = this,
         desiredLength = type ? self.components[type].length : 0,
-        maxCharVal = ALPHABET.length - 1,
+        maxCharVal = (ALPHABET.length - 1) / 2,
         str = '';
     
-    while (val >= 1) {
-        var charCode = val & maxCharVal;
+    while (val >= 1 || str.length < desiredLength) {
+        var charCode = ( val & maxCharVal ) | ( utils.randInt(256) & 0x20 );
         str = ALPHABET.charAt(charCode) + str;
-        val = val / ALPHABET.length;
+        val = val / (ALPHABET.length / 2);
     }
     
     // If string shorter than max length for given type, pad with '0'
-    while (str.length < desiredLength) {
-        str = '0' + str;
-    }
+    //while (str.length < desiredLength) {
+    //    str = '0' + str;
+    //}
     
     return str;
 };
@@ -106,8 +110,8 @@ generator.decode = function(str) {
     var val = 0;
         
     for (var i = 0; i < str.length; i++) {
-        var charVal = ALPHABET.indexOf(str.charAt(i));
-        val += ( charVal * Math.pow(ALPHABET.length, (str.length - i - 1)) );
+        var charVal = ALPHABET.indexOf(str.charAt(i)) & 31;
+        val += ( charVal * Math.pow(( ALPHABET.length / 2 ), (str.length - i - 1)) );
     }
     
     return val;
@@ -144,7 +148,8 @@ generator.generate = function() {
 // Parse a uuid, returning an object with each component's original value.
 generator.parse = function(str) {
     var self = this,
-        validRegex = new RegExp('^[' + ALPHABET + ']{16}$');
+        // validRegex = new RegExp('^[' + ALPHABET + ']{16}$');
+        validRegex = new RegExp('^[' + ALPHABET + ']{20}$');
         
     if (!validRegex.test(str)) {
         throw new Error('str is not a valid uuid');
