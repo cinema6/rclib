@@ -19,10 +19,11 @@ Create and return a 16-character unique id. The characters will be chosen from t
 
 UUIDs should not be truncated or modified if you want to maintain uniqueness.
 
-The uuids are generated from 4 components: a machineId, processId, timestamp, and counter; the machineId is derived from the local machine's IPv4 address. If used in the browser or another situation where there is no external IP address available (i.e. not '127.0.0.1'), the machineId will instead be a random integer that cannot possibly come from a valid IPv4 address.
+The uuids are generated from 4 components: a machineId, processId, timestamp, and counter; the machineId is derived from the local machine's IPv4 address. Because the uniqueness of the ids relies on a timestamp, machines generating ids should ensure their clock is synced with NTP servers.
 
-Because the uniqueness of the ids relies on a timestamp, machines generating ids should ensure their clock is synced with NTP servers.
-
+If used in the browser, this library will use different logic for the machineId and processId:
+- The machineId will be a random integer generated once per session that cannot possibly come from a valid IPv4 address.
+- The processId will be a random integer generated once per session
 
 ### `uuid.parseUuid(str)`
 
