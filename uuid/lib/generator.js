@@ -4,7 +4,7 @@ var utils   = require('./utils');
 
 // NOTE: DO NOT CHANGE THESE IF YOU WANT YOUR IDS TO REMAIN UNIQUE
 var OLD_TS      = 1456763680592,
-    ALPHABET    = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!';
+    ALPHABET    = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 
 var generator = {
     components: {   // NOTE: DON'T CHANGE THESE LENGTHS EITHER

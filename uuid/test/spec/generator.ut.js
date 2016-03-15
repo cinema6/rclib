@@ -115,7 +115,7 @@ describe('generator', function() {
         it('should decode strings into integers', function() {
             expect(generator.decode('MR0')).toBe(200000);
             expect(generator.decode('000001')).toBe(1);
-            expect(generator.decode('FOO!')).toBe(10955967);
+            expect(generator.decode('FOO_')).toBe(10955967);
             expect(generator.decode('evan')).toBe(3797655);
         });
     });
@@ -139,12 +139,12 @@ describe('generator', function() {
         it('should generate a 16 character id using url-safe characters', function() {
             var id = generator.generate();
             expect(id.length).toEqual(16);
-            expect(id).toMatch(/^[0-9a-zA-Z~!]{16}$/);
+            expect(id).toMatch(/^[0-9a-zA-Z-_]{16}$/);
             
             var matchObj = id.match(/(.{3})(.{3})(.{7})(.{3})/);
             expect(matchObj[1]).toBe('01X');        // encoded machineId
             expect(matchObj[2]).toBe('17n');        // encoded processId
-            expect(matchObj[3]).toBe('000bQ!t');    // encoded ts
+            expect(matchObj[3]).toBe('000bQ_t');    // encoded ts
             expect(matchObj[4]).toBe('0ji');        // encoded counter
             
             expect(generator.counter).toBe(1234);
@@ -181,7 +181,7 @@ describe('generator', function() {
                 generator.components.counter.start = 262143;
                 generator.counter = 262143;
 
-                expect(generator.generate()).toMatch(/.{13}!!!/);
+                expect(generator.generate()).toMatch(/.{13}___/);
                 expect(generator.counter).toBe(262143);
 
                 expect(generator.generate()).toMatch(/.{13}000/);
@@ -192,16 +192,16 @@ describe('generator', function() {
             });
             
             it('should reset the counter when the timestamp changes', function() {
-                expect(generator.generate()).toMatch(/.{6}000bQ!t0ji/);
+                expect(generator.generate()).toMatch(/.{6}000bQ_t0ji/);
                 expect(generator.counter).toBe(1234);
                 expect(generator.previousTS).toBe(3100637);
 
-                expect(generator.generate()).toMatch(/.{6}000bQ!t0jj/);
+                expect(generator.generate()).toMatch(/.{6}000bQ_t0jj/);
                 expect(generator.counter).toBe(1235);
                 expect(generator.previousTS).toBe(3100637);
 
                 jasmine.clock().tick(1);
-                expect(generator.generate()).toMatch(/.{6}000bQ!u0ji/);
+                expect(generator.generate()).toMatch(/.{6}000bQ_u0ji/);
                 expect(generator.counter).toBe(1234);
                 expect(generator.previousTS).toBe(3100638);
             });
@@ -219,14 +219,14 @@ describe('generator', function() {
             });
             expect(generator.parse('0Gz38h0004azV4dM').ts.toString()).toBe('Mon Feb 29 2016 11:52:52 GMT-0500 (EST)');
 
-            expect(generator.parse('f!!!!!!!!!!!!!!!')).toEqual({
+            expect(generator.parse('f_______________')).toEqual({
                 machineId   : 65535,
                 ip          : '?.?.255.255',
                 processId   : 262143,
                 ts          : jasmine.any(Date),
                 counter     : 262143
             });
-            expect(generator.parse('f!!!!!!!!!!!!!!!').ts.toString()).toBe('Sun Jul 13 2155 20:09:51 GMT-0400 (EDT)');
+            expect(generator.parse('f_______________').ts.toString()).toBe('Sun Jul 13 2155 20:09:51 GMT-0400 (EDT)');
         });
         
         it('should throw an error if the string is not a valid uuid', function() {
@@ -241,13 +241,13 @@ describe('generator', function() {
         it('should generate an id using url-safe characters', function() {
             var id = generator.randomUuid();
             expect(id.length).toEqual(20);
-            expect(id).toMatch(/^[0-9a-zA-Z~!]{20}$/);
+            expect(id).toMatch(/^[0-9a-zA-Z-_]{20}$/);
         });
         
         it('should allow generating an id of a custom length', function() {
             var id = generator.randomUuid(100);
             expect(id.length).toEqual(100);
-            expect(id).toMatch(/^[0-9a-zA-Z~!]{100}$/);
+            expect(id).toMatch(/^[0-9a-zA-Z-_]{100}$/);
         });
     });
 });
