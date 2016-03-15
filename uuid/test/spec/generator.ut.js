@@ -219,14 +219,14 @@ describe('generator', function() {
             });
             expect(generator.parse('0Gz38h0004azV4dM').ts.toString()).toBe('Mon Feb 29 2016 11:52:52 GMT-0500 (EST)');
 
-            expect(generator.parse('f_______________')).toEqual({
+            expect(generator.parse('f______________-')).toEqual({
                 machineId   : 65535,
                 ip          : '?.?.255.255',
                 processId   : 262143,
                 ts          : jasmine.any(Date),
-                counter     : 262143
+                counter     : 262142
             });
-            expect(generator.parse('f_______________').ts.toString()).toBe('Sun Jul 13 2155 20:09:51 GMT-0400 (EDT)');
+            expect(generator.parse('f______________-').ts.toString()).toBe('Sun Jul 13 2155 20:09:51 GMT-0400 (EDT)');
         });
         
         it('should throw an error if the string is not a valid uuid', function() {

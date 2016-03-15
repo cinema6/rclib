@@ -144,7 +144,7 @@ generator.generate = function() {
 // Parse a uuid, returning an object with each component's original value.
 generator.parse = function(str) {
     var self = this,
-        validRegex = new RegExp('^[' + ALPHABET + ']{16}$');
+        validRegex = new RegExp('^[' + ALPHABET.replace('-', '\\-') + ']{16}$');
         
     if (!validRegex.test(str)) {
         throw new Error('str is not a valid uuid');
