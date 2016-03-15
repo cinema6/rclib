@@ -1,6 +1,6 @@
 {
   "name": "rc-uuid",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Library for generating unique ids.",
   "main": "index.js",
   "directories": {
@@ -31,6 +31,5 @@
     "jasmine": "^2.4.1",
     "semver": "^5.1.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
