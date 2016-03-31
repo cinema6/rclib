@@ -1,6 +1,6 @@
 {
   "name": "rc-kinesis",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Library for working with Amazon Kinesis streams",
   "main": "index.js",
   "directories": {
