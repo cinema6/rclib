@@ -2,6 +2,7 @@
 
 var AWS = require('aws-sdk');
 var JsonProducer = require('../../lib/JsonProducer.js');
+var JsonStream = require('../../lib/JsonStream');
 
 describe('JsonProducer.js', function() {
     var jsonProducer;
@@ -87,6 +88,22 @@ describe('JsonProducer.js', function() {
                 expect(error).toBe('error');
                 done();
             });
+        });
+    });
+
+    describe('the createWriteStream()', function() {
+        var result;
+        var producer;
+
+        beforeEach(function() {
+            producer = new JsonProducer('streamStream');
+
+            result = producer.createWriteStream();
+        });
+
+        it('should return a JsonStream()', function() {
+            expect(result).toEqual(jasmine.any(JsonStream));
+            expect(result.__private__.producer).toBe(producer);
         });
     });
 });

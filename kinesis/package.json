@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.2.48",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "readable-stream": "^2.0.6"
   }
 }
