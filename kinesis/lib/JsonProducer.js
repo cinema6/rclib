@@ -2,6 +2,7 @@
 
 var AWS = require('aws-sdk');
 var Q = require('q');
+var JsonStream = require('./JsonStream');
 
 /**
 * Provides a simple way to produce JSON records into an Amazon Kinesis stream.
@@ -44,6 +45,18 @@ JsonProducer.prototype = {
                 }
             });
         });
+    },
+
+    /**
+     * Creates a [`stream.Writiable`]
+     * (https://github.com/nodejs/readable-stream/blob/master/doc/stream.markdown#class-streamwritable)
+     * that will send objects written to it to the Kinesis stream.
+     *
+     * @method createWriteStream
+     * @return {stream.Writable} A node writable stream
+     */
+    createWriteStream: function createWriteStream() {
+        return new JsonStream(this);
     }
 };
 
