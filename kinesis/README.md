@@ -13,7 +13,7 @@ Usage
 -----
 
 ### Producing to a Stream
-```
+```javascript
 var JsonProducer = require('rc-kinesis').JsonProducer;
 
 var producer = new JsonProducer('myStream', {
