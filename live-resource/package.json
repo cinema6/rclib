@@ -1,6 +1,6 @@
 {
   "name": "rc-live-resource",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Polls a REST endpoint, emitting events when the responses change.",
   "main": "dist/index.js",
   "files": [
@@ -14,7 +14,7 @@
     "test": "grunt test",
     "tdd": "grunt tdd",
     "build": "grunt build",
-    "prepublish": "node ./scripts/validate_npm_version.js \">= v2.x\" && npm test && npm build"
+    "prepublish": "node ./scripts/validate_npm_version.js \">= v2.x\" && npm test && npm run build"
   },
   "repository": {
     "type": "git",
